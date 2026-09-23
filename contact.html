@@ -65,14 +65,14 @@
               ιατρείο.
             </p>
             <p>
-              Για λόγους ασφάλειας και ιατρικού απορρήτου, μην αποστέλλετε μέσω της φόρμας αναλυτικό
+              Για λόγους ασφάλειας και ιατρικού απορρήτου, μην αποστέλλετε μέσω email αναλυτικό
               ιατρικό ιστορικό ή άλλα ευαίσθητα δεδομένα υγείας.
             </p>
           </div>
         </div>
       </section>
 
-      <section class="section" id="contact-form">
+      <section class="section" id="contact-details">
         <div class="container contact-grid">
           <div class="contact-aside">
             <article class="info-card reveal reveal-left">
@@ -97,8 +97,8 @@
             <article class="notice-card reveal reveal-left" role="note">
               <h2>Σε περίπτωση επείγοντος</h2>
               <p>
-                Η φόρμα επικοινωνίας και το email του ιατρείου δεν αποτελούν υπηρεσία επείγουσας
-                ψυχιατρικής υποστήριξης και δεν παρακολουθούνται συνεχώς.
+                Το email του ιατρείου δεν αποτελεί υπηρεσία επείγουσας ψυχιατρικής υποστήριξης και
+                δεν παρακολουθείται συνεχώς.
               </p>
               <p>
                 Σε περίπτωση άμεσου κινδύνου για τη ζωή ή την ασφάλεια τη δική σας ή άλλου ανθρώπου,
@@ -107,57 +107,14 @@
             </article>
           </div>
 
-          <div class="form-card reveal reveal-right">
-            <h2>Αίτημα επικοινωνίας</h2>
-            <form class="contact-form" data-endpoint="" data-fallback-email="gotosidis@gmail.com" novalidate>
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="cf-name">Ονοματεπώνυμο</label>
-                  <input id="cf-name" name="name" type="text" autocomplete="name" required />
-                </div>
-                <div class="form-group">
-                  <label for="cf-phone">Τηλέφωνο</label>
-                  <input id="cf-phone" name="phone" type="tel" autocomplete="tel" required />
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="cf-email">Email</label>
-                  <input id="cf-email" name="email" type="email" autocomplete="email" />
-                </div>
-                <div class="form-group">
-                  <label for="cf-preferred">Προτιμώμενος τρόπος επικοινωνίας</label>
-                  <select id="cf-preferred" name="preferred_contact">
-                    <option value="Τηλέφωνο">Τηλέφωνο</option>
-                    <option value="Email">Email</option>
-                  </select>
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="cf-message">Μήνυμα</label>
-                <p class="form-help" id="cf-message-help">
-                  Γράψτε μόνο τις πληροφορίες που είναι απαραίτητες για την επικοινωνία και
-                  τον προγραμματισμό του ραντεβού. Μην συμπεριλαμβάνετε αναλυτικά δεδομένα υγείας.
-                </p>
-                <textarea id="cf-message" name="message" aria-describedby="cf-message-help"></textarea>
-              </div>
-              <label class="form-consent">
-                <input type="checkbox" name="consent" required />
-                <span>
-                  Συναινώ στην επεξεργασία των στοιχείων που υποβάλλω αποκλειστικά για τη διαχείριση
-                  του αιτήματος επικοινωνίας μου, σύμφωνα με την Πολιτική Απορρήτου.
-                </span>
-              </label>
-              <button class="button button-primary" type="submit">Αποστολή αιτήματος</button>
-              <p class="form-status form-status--success" role="status" hidden>
-                Το αίτημά σας καταχωρήθηκε. Θα υπάρξει επικοινωνία μαζί σας για τον προγραμματισμό του
-                ραντεβού.
-              </p>
-              <p class="form-status form-status--error" role="alert" hidden>
-                Η αποστολή δεν ολοκληρώθηκε. Δοκιμάστε ξανά ή επικοινωνήστε τηλεφωνικά με το
-                ιατρείο.
-              </p>
-            </form>
+          <div class="map-card reveal reveal-right">
+            <iframe
+              title="Χάρτης: Αποστόλου Σούζου 6, Κομοτηνή"
+              src="https://www.google.com/maps?q=%CE%91%CF%80%CE%BF%CF%83%CF%84%CF%8C%CE%BB%CE%BF%CF%85%20%CE%A3%CE%BF%CF%8D%CE%B6%CE%BF%CF%85%206%2C%20%CE%9A%CE%BF%CE%BC%CE%BF%CF%84%CE%B7%CE%BD%CE%AE%20691%2000&amp;hl=el&amp;z=17&amp;output=embed"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              allowfullscreen
+            ></iframe>
           </div>
         </div>
       </section>

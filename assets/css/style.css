@@ -1077,8 +1077,7 @@ a.num-card:focus-visible {
 }
 
 .info-card,
-.notice-card,
-.form-card {
+.notice-card {
   display: grid;
   gap: 1.1rem;
   padding: clamp(1.5rem, 4vw, 2.5rem);
@@ -1088,9 +1087,27 @@ a.num-card:focus-visible {
   box-shadow: var(--shadow-soft);
 }
 
+.map-card {
+  position: relative;
+  align-self: stretch;
+  min-height: 24rem;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-soft);
+}
+
+.map-card iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
 .info-card h2,
-.notice-card h2,
-.form-card h2 {
+.notice-card h2 {
   font-size: 1.5rem;
 }
 
@@ -1150,113 +1167,6 @@ a.num-card:focus-visible {
 
 .notice-card p {
   color: #5c3a1c;
-}
-
-/* Form */
-
-.contact-form {
-  display: grid;
-  gap: 1.1rem;
-}
-
-.form-row {
-  display: grid;
-  gap: 1.1rem;
-  align-items: end;
-}
-
-.form-group {
-  display: grid;
-  gap: 0.45rem;
-}
-
-.form-group label {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--color-ink);
-}
-
-input,
-select,
-textarea {
-  width: 100%;
-  min-height: 3rem;
-  border: 1px solid #c9cde6;
-  border-radius: var(--radius-sm);
-  padding: 0.75rem 0.9rem;
-  background: #fff;
-  color: var(--color-ink);
-  transition: border-color var(--transition), box-shadow var(--transition);
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-  outline: none;
-  border-color: var(--color-navy);
-  box-shadow: 0 0 0 4px rgba(37, 48, 149, 0.14);
-}
-
-/* Same height for text fields and dropdowns so side-by-side fields line up. */
-input:not([type="checkbox"]),
-select {
-  height: 3.25rem;
-  line-height: 1.4;
-}
-
-textarea {
-  resize: vertical;
-  min-height: 9rem;
-}
-
-.form-help {
-  color: var(--color-muted);
-  font-size: 0.88rem;
-  line-height: 1.55;
-}
-
-.form-consent {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 0.75rem;
-  align-items: start;
-  color: var(--color-muted);
-  font-size: 0.92rem;
-  line-height: 1.55;
-  cursor: pointer;
-}
-
-.form-consent input {
-  width: 1.25rem;
-  height: 1.25rem;
-  min-height: 0;
-  margin-top: 0.1rem;
-  padding: 0;
-  accent-color: var(--color-navy);
-}
-
-.contact-form .button {
-  justify-self: start;
-}
-
-.contact-form [aria-invalid="true"] {
-  border-color: #b3261e;
-}
-
-.form-status {
-  padding: 1rem 1.1rem;
-  border-radius: var(--radius-sm);
-  font-weight: 500;
-}
-
-.form-status--success {
-  background: var(--color-tint);
-  color: var(--color-navy);
-}
-
-.form-status--error {
-  background: #fdecea;
-  color: #8c1d18;
 }
 
 /* Mobile call bar */
@@ -1435,10 +1345,6 @@ textarea {
 
   .num-grid,
   .steps {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .form-row {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
