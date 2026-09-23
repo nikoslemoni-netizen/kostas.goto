@@ -30,168 +30,77 @@ if (navToggle && navMenu) {
   });
 }
 
-const popRevealSelectors = [
-  "main > section",
-  ".hero-grid > div",
-  ".page-hero-grid > div",
-  ".split-layout > div",
-  ".about-preview > div",
-  ".contact-layout > div",
-  ".hero-copy",
-  ".hero-highlights",
-  ".hero-card",
-  ".hero-note",
-  ".info-panel",
-  ".content-card",
-  ".feature-card",
-  ".service-card",
-  ".reason-card",
-  ".timeline-item",
-  ".sidebar-card",
-  ".contact-panel",
-  ".service-item",
-  ".stacked-copy",
-  ".section-heading",
-  ".about-preview-copy",
-  ".portrait-placeholder",
-  ".map-placeholder",
-  ".cta-panel",
-  ".feature-grid > *",
-  ".reasons-grid > *",
-  ".cards-grid > *",
-  ".content-grid > *",
-  ".timeline > *",
-  ".service-list > *",
-  ".contact-sidebar > *",
-  ".footer-grid > div",
-];
-
+const revealElements = document.querySelectorAll(".reveal");
 const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-const popRevealElements = [...new Set(popRevealSelectors.flatMap((selector) => [...document.querySelectorAll(selector)]))];
-const siteHeader = document.querySelector(".site-header");
-const backgroundSlides = [...document.querySelectorAll(".about-page-background-slide")];
-let revealSyncFrame = null;
 
-const isElementInViewport = (element) => {
-  const rect = element.getBoundingClientRect();
-  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-  const triggerOffset = Math.min(viewportHeight * 0.12, 96);
-
-  return rect.bottom > triggerOffset && rect.top < viewportHeight - triggerOffset;
-};
-
-const restartCssAnimation = (element) => {
-  if (!element) {
-    return;
-  }
-
-  element.style.animation = "none";
-  void element.offsetWidth;
-  element.style.animation = "";
-};
-
-const replayVisibleRevealAnimations = () => {
-  if (!popRevealElements.length || reducedMotionQuery.matches) {
-    return;
-  }
-
-  popRevealElements.forEach((element) => {
-    element.classList.remove("is-visible");
-  });
-
-  requestAnimationFrame(() => {
-    popRevealElements.forEach((element) => {
-      if (isElementInViewport(element)) {
-        element.classList.add("is-visible");
-      }
-    });
-  });
-};
-
-const replayBackgroundAnimations = () => {
-  if (!backgroundSlides.length || reducedMotionQuery.matches) {
-    return;
-  }
-
-  backgroundSlides.forEach((slide) => {
-    slide.classList.remove("is-pop-entering", "is-slide-entering");
-  });
-
-  requestAnimationFrame(() => {
-    backgroundSlides.forEach((slide, index) => {
-      if (slide.classList.contains("is-active") && index === 0) {
-        slide.classList.add("is-pop-entering");
-      }
-    });
-  });
-};
-
-const replayPageAnimations = () => {
-  if (reducedMotionQuery.matches) {
-    return;
-  }
-
-  restartCssAnimation(siteHeader);
-  replayVisibleRevealAnimations();
-  replayBackgroundAnimations();
-  queueRevealSync();
-};
-
-const syncRevealVisibility = () => {
-  if (!popRevealElements.length || reducedMotionQuery.matches) {
-    return;
-  }
-
-  popRevealElements.forEach((element) => {
-    element.classList.toggle("is-visible", isElementInViewport(element));
-  });
-};
-
-const queueRevealSync = () => {
-  if (revealSyncFrame !== null) {
-    return;
-  }
-
-  revealSyncFrame = requestAnimationFrame(() => {
-    revealSyncFrame = null;
-    syncRevealVisibility();
-  });
-};
-
-if (popRevealElements.length) {
-  if (reducedMotionQuery.matches || !("IntersectionObserver" in window)) {
-    popRevealElements.forEach((element) => {
-      element.classList.add("is-visible");
-    });
-  } else {
-    popRevealElements.forEach((element, index) => {
-      element.classList.add("pop-reveal");
-      element.style.setProperty("--pop-delay", `${Math.min(index * 60, 420)}ms`);
-    });
-
-    const popRevealObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          entry.target.classList.toggle("is-visible", entry.isIntersecting);
+if (reducedMotionQuery.matches || !("IntersectionObserver" in window)) {
+  revealElements.forEach((element) => element.classList.add("is-visible"));
+} else {
+  const revealObserver = new IntersectionObserver(
+    (entries, observer) => {
+      // Elements that come into view together appear one after another.
+      entries
+        .filter((entry) => entry.isIntersecting)
+        .forEach((entry, index) => {
+          const delay = Math.min(index, 5) * 130;
+          entry.target.style.setProperty("--reveal-delay", `${delay}ms`);
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+          // Drop the delay afterwards so hover transitions stay instant.
+          window.setTimeout(() => entry.target.style.removeProperty("--reveal-delay"), delay + 1000);
         });
-      },
-      {
-        threshold: 0.08,
-        rootMargin: "0px 0px -4% 0px",
-      }
-    );
+    },
+    { threshold: 0.12, rootMargin: "0px 0px -5% 0px" }
+  );
 
-    popRevealElements.forEach((element) => {
-      popRevealObserver.observe(element);
-    });
-  }
+  revealElements.forEach((element) => revealObserver.observe(element));
 }
 
-queueRevealSync();
-window.addEventListener("load", replayPageAnimations);
-window.addEventListener("pageshow", replayPageAnimations);
-window.addEventListener("resize", queueRevealSync, { passive: true });
-window.addEventListener("scroll", queueRevealSync, { passive: true });
+const siteHeader = document.querySelector(".site-header");
+const mobileCallBar = document.querySelector(".mobile-call-bar");
+
+if (siteHeader) {
+  let lastScrollY = window.scrollY;
+  let ticking = false;
+
+  const updateHeader = () => {
+    const currentScrollY = window.scrollY;
+    const menuOpen = navMenu && navMenu.classList.contains("is-open");
+    const delta = currentScrollY - lastScrollY;
+
+    if (currentScrollY < 80 || menuOpen) {
+      siteHeader.classList.remove("is-hidden");
+    } else if (delta > 6) {
+      siteHeader.classList.add("is-hidden");
+    } else if (delta < -6) {
+      siteHeader.classList.remove("is-hidden");
+    }
+
+    // The mobile call bar does the opposite of the header: visible on the way down.
+    if (mobileCallBar) {
+      mobileCallBar.classList.toggle("is-visible", siteHeader.classList.contains("is-hidden"));
+    }
+
+    if (Math.abs(delta) > 6 || currentScrollY < 80) {
+      lastScrollY = currentScrollY;
+    }
+    ticking = false;
+  };
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateHeader);
+        ticking = true;
+      }
+    },
+    { passive: true }
+  );
+
+  // Keyboard users tabbing into the header should always see it.
+  siteHeader.addEventListener("focusin", () => siteHeader.classList.remove("is-hidden"));
+}
 
 const backgroundCarousels = document.querySelectorAll("[data-background-carousel]");
 
@@ -260,3 +169,78 @@ backgroundCarousels.forEach((carousel) => {
 
   queueNextRotate();
 });
+
+const contactForm = document.querySelector(".contact-form");
+
+if (contactForm) {
+  const successMessage = contactForm.querySelector(".form-status--success");
+  const errorMessage = contactForm.querySelector(".form-status--error");
+  const submitButton = contactForm.querySelector('[type="submit"]');
+
+  const showStatus = (element) => {
+    [successMessage, errorMessage].forEach((message) => {
+      message.hidden = message !== element;
+    });
+  };
+
+  const buildMailtoLink = (data) => {
+    const body = [
+      `Ονοματεπώνυμο: ${data.get("name")}`,
+      `Τηλέφωνο: ${data.get("phone")}`,
+      `Email: ${data.get("email")}`,
+      `Προτιμώμενος τρόπος επικοινωνίας: ${data.get("preferred_contact")}`,
+      "",
+      data.get("message"),
+    ].join("\n");
+
+    return `mailto:${contactForm.dataset.fallbackEmail}?subject=${encodeURIComponent("Αίτημα επικοινωνίας")}&body=${encodeURIComponent(body)}`;
+  };
+
+  contactForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    let firstInvalid = null;
+    contactForm.querySelectorAll("input, select, textarea").forEach((field) => {
+      const isValid = field.checkValidity();
+      field.setAttribute("aria-invalid", String(!isValid));
+      if (!isValid && !firstInvalid) {
+        firstInvalid = field;
+      }
+    });
+
+    if (firstInvalid) {
+      firstInvalid.focus();
+      return;
+    }
+
+    const data = new FormData(contactForm);
+    const endpoint = contactForm.dataset.endpoint;
+
+    // Χωρίς ρυθμισμένο endpoint, το αίτημα ανοίγει ως email στο πρόγραμμα αλληλογραφίας του επισκέπτη.
+    if (!endpoint) {
+      window.location.href = buildMailtoLink(data);
+      return;
+    }
+
+    submitButton.disabled = true;
+
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        body: data,
+        headers: { Accept: "application/json" },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      contactForm.reset();
+      showStatus(successMessage);
+    } catch (error) {
+      showStatus(errorMessage);
+    } finally {
+      submitButton.disabled = false;
+    }
+  });
+}
