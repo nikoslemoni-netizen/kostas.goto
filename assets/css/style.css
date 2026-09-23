@@ -737,6 +737,10 @@ p {
   color: #fff;
 }
 
+.quote-band .text-link {
+  justify-self: center;
+}
+
 .text-link-light:hover,
 .text-link-light:focus-visible {
   color: var(--color-lavender);
@@ -1191,6 +1195,13 @@ textarea:focus {
   outline: none;
   border-color: var(--color-navy);
   box-shadow: 0 0 0 4px rgba(37, 48, 149, 0.14);
+}
+
+/* Same height for text fields and dropdowns so side-by-side fields line up. */
+input:not([type="checkbox"]),
+select {
+  height: 3.25rem;
+  line-height: 1.4;
 }
 
 textarea {
