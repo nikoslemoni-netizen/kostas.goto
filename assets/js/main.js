@@ -1,6 +1,44 @@
 const navToggle = document.querySelector(".nav-toggle");
 const navMenu = document.querySelector(".nav-menu");
 
+const appointmentCallLinks = [...document.querySelectorAll("a")].filter((link) =>
+  link.textContent.trim().includes("Καλέστε για ραντεβού")
+);
+
+if (appointmentCallLinks.length) {
+  const phoneDialog = document.createElement("dialog");
+  phoneDialog.className = "phone-dialog";
+  phoneDialog.setAttribute("aria-labelledby", "phone-dialog-title");
+  phoneDialog.innerHTML = `
+    <div class="phone-dialog-card">
+      <button class="phone-dialog-close" type="button" aria-label="Κλείσιμο">&times;</button>
+      <p class="eyebrow">ΤΗΛΕΦΩΝΙΚΗ ΕΠΙΚΟΙΝΩΝΙΑ</p>
+      <h2 id="phone-dialog-title">Επιλέξτε αριθμό τηλεφώνου</h2>
+      <div class="phone-dialog-options">
+        <a href="tel:+306973054060">697 305 4060</a>
+        <a href="tel:+302531086002">25310 86002</a>
+      </div>
+    </div>
+  `;
+  document.body.append(phoneDialog);
+
+  const closePhoneDialog = () => phoneDialog.close();
+
+  appointmentCallLinks.forEach((link) => {
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      phoneDialog.showModal();
+    });
+  });
+
+  phoneDialog.querySelector(".phone-dialog-close").addEventListener("click", closePhoneDialog);
+  phoneDialog.addEventListener("click", (event) => {
+    if (event.target === phoneDialog) {
+      closePhoneDialog();
+    }
+  });
+}
+
 if (navToggle && navMenu) {
   const closeMenu = () => {
     navToggle.setAttribute("aria-expanded", "false");
