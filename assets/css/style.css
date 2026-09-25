@@ -254,6 +254,31 @@ button {
   outline-offset: 3px;
 }
 
+/* Skip link: hidden until focused with the keyboard */
+
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 200;
+  padding: 0.75rem 1.25rem;
+  border-radius: 999px;
+  background: var(--color-navy);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 10px 30px rgba(26, 33, 96, 0.3);
+  transform: translateY(-200%);
+  transition: transform var(--transition);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+main:focus {
+  outline: none;
+}
+
 /* Typography */
 
 h1,
