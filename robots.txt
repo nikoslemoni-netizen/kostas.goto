@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://gotosidis.gr/sitemap.xml
