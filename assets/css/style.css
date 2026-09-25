@@ -877,6 +877,16 @@ a.num-card:focus-visible {
   }
 }
 
+/* 404 page */
+.error-page {
+  min-height: 45vh;
+  align-content: center;
+}
+
+.error-page .hero-actions {
+  justify-content: flex-start;
+}
+
 .page-intro-block {
   display: grid;
   gap: 1.25rem;

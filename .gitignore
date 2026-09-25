@@ -7,3 +7,17 @@ _site/
 Gemfile.lock
 vendor/
 .sass-cache/
+
+# Source files kept locally only (not used by the site, must not be public)
+Kostas Instructions/
+*.HEIC
+*.heic
+Backround*
+backround*
+Bavkround*
+λογκο-extracted.png
+λογκο-floating.svg
+λογκο-transparent.png
+λογκο.svg
+σχεδιο.png
+φωτο *
